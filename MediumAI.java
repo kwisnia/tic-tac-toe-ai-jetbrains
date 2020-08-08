@@ -1,22 +1,29 @@
 package tictactoe;
 
-import java.util.Random;
-
 public class MediumAI implements Player {
-    public int tryDefend(Field field) {
-        return 0;
+    private boolean canLose(Field field) {
+        return field.check(false) != null;
     }
-    public int tryWin(Field field) {
-        return 0;
+    private boolean canWin(Field field) {
+        return field.check(true) != null;
+    }
+    private void tryWin(Field field) {
+        Symbol nextMove = field.check(true);
+        field.setSymbol(nextMove);
+    }
+    private void tryDefend(Field field) {
+        Symbol nextMove = field.check(false);
+        field.setSymbol(nextMove);
     }
     @Override
     public int move(Field field) {
-        int[] pom = field.check();
         System.out.println("Making move level \"medium\"");
-        if(pom == null) {
-            moveRandomly(field);
+        if (canWin(field)) {
+            tryWin(field);
+        } else if (canLose(field)) {
+            tryDefend(field);
         } else {
-            field.setField(pom[0], pom[1]);
+            moveRandomly(field);
         }
         return 0;
     }

@@ -1,24 +1,18 @@
 package tictactoe;
 
-import java.util.Arrays;
-
 public class Field {
-    private static final char[][] field = new char[3][3];
+    private static final Symbol[][] field = new Symbol[3][3];
     private static int xCount = 0;
     private static int yCount = 0;
 
     public Field() {
-        for (char[] row : field) {
-            Arrays.fill(row, ' ');
+        for (Symbol[] row : field) {
+            java.util.Arrays.fill(row, Symbol.EMPTY);
         }
     }
 
     boolean isFree(int x, int y) {
-        if (field[x][y] != ' ') {
-            return false;
-        } else {
-            return true;
-        }
+        return field[x][y] == Symbol.EMPTY;
     }
 
     public int getXCount() {
@@ -29,79 +23,74 @@ public class Field {
         return yCount;
     }
 
-    public void display() {
-        System.out.println("---------");
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("---------");
+        stringBuilder.append(System.lineSeparator());
         for (int i = 0; i < 3; i++) {
-            System.out.print("| ");
+            stringBuilder.append("| ");
             for (int j = 0; j < 3; j++) {
-                System.out.print(field[i][j] + " ");
+                stringBuilder.append(field[i][j].getSymbol()).append(" ");
             }
-            System.out.print('|');
-            System.out.println();
+            stringBuilder.append('|');
+            stringBuilder.append(System.lineSeparator());
         }
-        System.out.println("---------");
+        stringBuilder.append("---------");
+        return stringBuilder.toString();
     }
 
     public void setField(int x, int y) { // x = y, y = x - 1
         if (xCount == yCount) {
-            field[x][y] = 'X';
+            field[x][y] = Symbol.X;
             xCount++;
         } else {
-            field[x][y] = 'O';
+            field[x][y] = Symbol.O;
             yCount++;
         }
     }
-
-    public boolean winCheck() {
-        char ch = field[0][0];
-        int chcount = 0;
+    public void setSymbol(Symbol symbol) {
+        if (xCount == yCount) {
+            symbol = Symbol.X;
+            xCount++;
+        } else {
+            symbol = Symbol.O;
+            yCount++;
+        }
+    }
+    private boolean rowCheck(Symbol symbol) {
         for (int i = 0; i < 3; i++) {
-            ch = field[i][0];
-            for (int j = 0; j < 3; j++) {
-                if (field[i][j] == ch) {
-                    chcount++;
-                }
-            }
-            if (chcount == 3 && ch != ' ') {
-                System.out.println(ch + " wins");
-                return true;
-            }
-            chcount = 0;
-        }
-        for (int j = 0; j < 3; j++) {
-            ch = field[0][j];
-            for (int i = 0; i < 3; i++) {
-                if (field[i][j] == ch) {
-                    chcount++;
-                }
-            }
-            if (chcount == 3 && ch != ' ') {
-                System.out.println(ch + " wins");
-                return true;
-            }
-            chcount = 0;
-        }
-        ch = field[0][0];
-        if (field[0][0] == field[1][1] && field[0][0] != ' ') {
-            if (field[0][0] == field[2][2]) {
-                System.out.println(ch + " wins");
+            if (field[i][0] == symbol && field[i][1] == symbol && field[i][2] == symbol) {
                 return true;
             }
         }
-        ch = field[0][2];
-        if (field[0][2] == field[1][1] && field[0][2] != ' ') {
-            if (field[0][2] == field[2][0]) {
-                System.out.println(ch + " wins");
+        return false;
+    }
+    private boolean columnCheck(Symbol symbol) {
+        for (int i = 0; i < 3; i++) {
+            if (field[0][i] == symbol && field[1][i] == symbol && field[2][i] == symbol) {
                 return true;
             }
         }
+        return false;
+    }
+    private boolean diagonalCheck(Symbol symbol) {
+        return field[0][0] == symbol && field[1][1] == symbol && field[2][2] == symbol ||
+                field[2][0] == symbol && field[1][1] == symbol && field[0][2] == symbol;
+    }
+
+    public boolean winCheck(Symbol symbol) {
+            if (rowCheck(symbol) || columnCheck(symbol) || diagonalCheck(symbol)) {
+                System.out.println(symbol + " wins");
+                return true;
+            }
         return false;
     }
 
     public void state() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (field[i][j] == ' ') {
+                if (field[i][j] == Symbol.EMPTY) {
                     System.out.println("Game not finished");
                     return;
                 }
@@ -110,63 +99,58 @@ public class Field {
         System.out.println("Draw");
     }
 
-    public int[] check() {
-        int[] pom;
+    public Symbol check(boolean attack) {
+        Symbol pom;
 //wiersze
         for (int i = 0; i < 3; i++) {
-            pom = tryCheck(new int[]{i, 0}, new int[]{i, 1}, new int[]{i, 2});
+            pom = tryCheck(field[i][0], field[i][1], field[i][2], attack);
             if (pom != null) {
                 return pom;
             }
         }
 //kolumny
         for (int i = 0; i < 3; i++) {
-            pom = tryCheck(new int[]{0, i}, new int[]{1, i}, new int[]{2, i});
+            pom = tryCheck(field[0][i], field[1][i], field[2][i], attack);
             if (pom != null) {
                 return pom;
             }
         }
 
 //przekatne
-        pom =  tryCheck(new int[]{0, 0}, new int[]{1, 1}, new int[]{2, 2});
+        pom =  tryCheck(field[0][0], field[1][1], field[2][2], attack);
         if (pom != null) {
             return pom;
         }
-        pom =  tryCheck(new int[]{2, 0}, new int[]{1, 1}, new int[]{0, 2});
+        pom =  tryCheck(field[2][0], field[1][1], field[0][2], attack);
         if (pom != null) {
             return pom;
         }
         return null;
     }
-    public int[] tryCheck(int[] first, int[] second, int[] third, boolean def){
-        char targetSign;
-        if (def) {
+    private Symbol tryCheck(Symbol first, Symbol second, Symbol third, boolean attack){
+        Symbol targetSign;
+        if (attack) {
             if (xCount == yCount) {
-                targetSign = 'O';
+                targetSign = Symbol.X;
             } else {
-                targetSign = 'X';
+                targetSign = Symbol.O;
             }
         } else {
             if (xCount == yCount) {
-                targetSign = 'X';
+                targetSign = Symbol.O;
             } else {
-                targetSign = 'O';
+                targetSign = Symbol.X;
             }
         }
-
-
-        if ( field[first[0]][first[1]] == ' ' && field[second[0]][second[1]] == targetSign &&
-                field[third[0]][third[1]] == targetSign) {
-            return first;
-        }
-        if ( field[first[0]][first[1]] == targetSign && field[second[0]][second[1]] == ' ' &&
-                field[third[0]][third[1]] == targetSign) {
-            return second;
-        }
-        if ( field[first[0]][first[1]] == targetSign && field[second[0]][second[1]] == targetSign &&
-                field[third[0]][third[1]] == ' ') {
-            return third;
-        }
+            if (first == Symbol.EMPTY && second == targetSign &&  third == targetSign) {
+                return first;
+            }
+            if (first == targetSign && second == Symbol.EMPTY && third == targetSign) {
+                return second;
+            }
+            if (first == targetSign && second == targetSign && third == Symbol.EMPTY) {
+                return third;
+            }
         return null;
     }
 }

@@ -25,11 +25,11 @@ public class Human implements Player {
             return -1;
         }
         y = y == 3 ? 0 : y == 2 ? 1 : 2;
-        if (!field.isFree(y, x-1)) {
+        if (!field.isFree(y, x - 1)) {
             System.out.println("This cell is occupied! Choose another one!");
             return -1;
         }
-        field.setField(y, x-1);
+        field.setField(y, x - 1);
         return 0;
     }
 }

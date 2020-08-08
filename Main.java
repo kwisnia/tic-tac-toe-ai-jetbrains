@@ -13,7 +13,7 @@ public class Main {
         if (menu() == -1) {
             return;
         }
-        field.display();
+        field.toString();
         game(field);
 
     }
@@ -80,8 +80,8 @@ public class Main {
             do {
                 h = player1.move(field);
             } while (h == -1);
-            field.display();
-            if (field.winCheck()) {
+            System.out.println(field.toString());
+            if (field.winCheck(Symbol.X)) {
                 break;
             } else if (field.getXCount() + field.getYCount() == 9) {
                 field.state();
@@ -90,8 +90,8 @@ public class Main {
             do {
                 h = player2.move(field);
             } while (h == -1);
-            field.display();
-            if (field.winCheck()) {
+            System.out.println(field.toString());
+            if (field.winCheck(Symbol.O)) {
                 break;
             }
         } } while (menu() != -1);
