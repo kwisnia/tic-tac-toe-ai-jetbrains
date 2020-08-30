@@ -45,6 +45,9 @@ public class Main {
                         case "medium":
                             player1 = new MediumAI();
                             break;
+                        case "hard":
+                            player1 = new HardAI();
+                            break;
                         default:
                             System.out.println("Bad parameters!");
                             break;
@@ -58,6 +61,9 @@ public class Main {
                             break;
                         case "medium":
                             player2 = new MediumAI();
+                            break;
+                        case "hard":
+                            player1 = new HardAI();
                             break;
                         default:
                             System.out.println("Bad parameters!");
@@ -82,9 +88,11 @@ public class Main {
             } while (h == -1);
             System.out.println(field.toString());
             if (field.winCheck(Symbol.X)) {
+                field.clear();
                 break;
             } else if (field.getXCount() + field.getYCount() == 9) {
-                field.state();
+                System.out.println("Draw");
+                field.clear();
                 break;
             }
             do {
@@ -92,6 +100,7 @@ public class Main {
             } while (h == -1);
             System.out.println(field.toString());
             if (field.winCheck(Symbol.O)) {
+                field.clear();
                 break;
             }
         } } while (menu() != -1);
