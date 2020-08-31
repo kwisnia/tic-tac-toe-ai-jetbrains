@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import java.util.List;
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class Field {
     private Symbol[][] field = new Symbol[3][3];
     private int xCount = 0;
@@ -99,10 +100,7 @@ public class Field {
     }
 
     public boolean winCheck(Symbol symbol) {
-        if (rowCheck(symbol) || columnCheck(symbol) || diagonalCheck(symbol)) {
-            return true;
-        }
-        return false;
+        return rowCheck(symbol) || columnCheck(symbol) || diagonalCheck(symbol);
     }
     public void printWinMessage(Symbol symbol) {
             System.out.println(symbol + " wins");
@@ -111,6 +109,7 @@ public class Field {
     // =====================================
     // CHECKING FOR MOVES THAT CAN END THE GAME (2 in a row)
     // =====================================
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean endingMoveCheck(boolean attack) {
         Symbol targetSign;
         //

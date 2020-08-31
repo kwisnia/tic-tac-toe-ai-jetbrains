@@ -6,7 +6,7 @@ public class Main {
     static public final Scanner scanner = new Scanner(System.in);
     static Player player1 = null;
     static Player player2 = null;
-    static Field field = new Field();
+    static final Field field = new Field();
     public static void main(String[] args) {
         if (menu() == -1) {
             return;
