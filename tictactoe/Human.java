@@ -24,12 +24,11 @@ public class Human implements Player {
             System.out.println("Coordinates should be from 1 to 3!");
             return -1;
         }
-        y = y == 3 ? 0 : y == 2 ? 1 : 2;
-        if (!field.isFree(y, x - 1)) {
+        if (!field.isFree(x, y)) {
             System.out.println("This cell is occupied! Choose another one!");
             return -1;
         }
-        field.setField(y, x - 1);
+        field.setField(x, y);
         return 0;
     }
 }
