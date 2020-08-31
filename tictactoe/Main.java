@@ -8,8 +8,6 @@ public class Main {
     static Player player2 = null;
     static Field field = new Field();
     public static void main(String[] args) {
-        int h;
-        int end = 0;
         if (menu() == -1) {
             return;
         }
@@ -34,38 +32,18 @@ public class Main {
                         break;
                     }
                     switch (parameters[1]) {
-                        case "user":
-                            player1 = new Human();
-                            break;
-                        case "easy":
-                            player1 = new EasyAI();
-                            break;
-                        case "medium":
-                            player1 = new MediumAI();
-                            break;
-                        case "hard":
-                            player1 = new HardAI(Symbol.X);
-                            break;
-                        default:
-                            System.out.println("Bad parameters!");
-                            break;
+                        case "user" -> player1 = new Human();
+                        case "easy" -> player1 = new EasyAI();
+                        case "medium" -> player1 = new MediumAI();
+                        case "hard" -> player1 = new HardAI(Symbol.X);
+                        default -> System.out.println("Bad parameters!");
                     }
                     switch (parameters[2]) {
-                        case "user":
-                            player2 = new Human();
-                            break;
-                        case "easy":
-                            player2 = new EasyAI();
-                            break;
-                        case "medium":
-                            player2 = new MediumAI();
-                            break;
-                        case "hard":
-                            player2 = new HardAI(Symbol.O);
-                            break;
-                        default:
-                            System.out.println("Bad parameters!");
-                            break;
+                        case "user" -> player2 = new Human();
+                        case "easy" -> player2 = new EasyAI();
+                        case "medium" -> player2 = new MediumAI();
+                        case "hard" -> player2 = new HardAI(Symbol.O);
+                        default -> System.out.println("Bad parameters!");
                     }
                     break;
                 case "exit":
