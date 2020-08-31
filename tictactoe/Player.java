@@ -6,8 +6,8 @@ interface Player {
     int move(Field field);
     default void moveRandomly(Field field) {
         Random r = new Random();
-        int x = 0;
-        int y = 0;
+        int x;
+        int y;
         do {
             x = r.nextInt(3);
             y = r.nextInt(3);

@@ -78,7 +78,7 @@ public class Main {
         return 0;
     }
     public static void game(Field field) {
-        int h = 0;
+        int h;
         do {
         while (true) {
             do {

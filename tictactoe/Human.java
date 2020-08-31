@@ -8,8 +8,8 @@ public class Human implements Player {
         Scanner scanner = new Scanner(System.in);
         String xs;
         String ys;
-        int x = 0;
-        int y = 0;
+        int x;
+        int y;
         System.out.print("Enter the coordinates: ");
         try {
             xs = scanner.next();
