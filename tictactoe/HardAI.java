@@ -1,6 +1,7 @@
 package tictactoe;
 
 import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,11 +19,6 @@ public class HardAI implements Player {
     public int move(Field field) {
         System.out.println("Making move level \"hard\"");
         minmax(field, false);
-//        if (field.xIsNext() && symbol == Symbol.X) {
-//            minmax(field, false);
-//        } else {
-//            minmax(field, true);
-//        }
         field.setField(bestMoveX, bestMoveY);
         return 0;
     }
