@@ -5,14 +5,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Field {
-    private static final Symbol[][] field = new Symbol[3][3];
-    private static int xCount = 0;
-    private static int oCount = 0;
+    private Symbol[][] field = new Symbol[3][3];
+    private int xCount = 0;
+    private int oCount = 0;
 
     public Field() {
         for (Symbol[] row : field) {
             java.util.Arrays.fill(row, Symbol.EMPTY);
         }
+    }
+    public Field(Field field) {
+        this.field = field.field;
+        this.xCount = field.xCount;
+        this.oCount = field.oCount;
     }
 
     boolean isFree(int x, int y) {
@@ -45,13 +50,26 @@ public class Field {
     }
 
     public void setField(int x, int y) { // x = y, y = x - 1
-        if (xCount == oCount) {
+        if (xIsNext()) {
             field[x][y] = Symbol.X;
             xCount++;
         } else {
             field[x][y] = Symbol.O;
             oCount++;
         }
+    }
+
+    public void unsetField(int x, int y) {
+        if (field[x][y] == Symbol.X) {
+            xCount--;
+        } else if (field[x][y] == Symbol.O) {
+            oCount--;
+        }
+        field[x][y] = Symbol.EMPTY;
+    }
+
+    public boolean xIsNext() {
+        return xCount == oCount;
     }
 
     // =====================================
@@ -82,10 +100,12 @@ public class Field {
 
     public boolean winCheck(Symbol symbol) {
         if (rowCheck(symbol) || columnCheck(symbol) || diagonalCheck(symbol)) {
-            System.out.println(symbol + " wins");
             return true;
         }
         return false;
+    }
+    public void printWinMessage(Symbol symbol) {
+            System.out.println(symbol + " wins");
     }
 
     // =====================================
@@ -199,5 +219,6 @@ public class Field {
                 }
             }
         }
+        return emptySpots;
     }
 }

@@ -13,7 +13,7 @@ public class Main {
         if (menu() == -1) {
             return;
         }
-        field.toString();
+        System.out.println(field.toString());
         game(field);
 
     }
@@ -22,8 +22,6 @@ public class Main {
         player2 = null;
         String[] parameters;
         String command;
-        String p1;
-        String p2;
         do {
             System.out.print("Input command: ");
             command = scanner.nextLine();
@@ -46,7 +44,7 @@ public class Main {
                             player1 = new MediumAI();
                             break;
                         case "hard":
-                            player1 = new HardAI();
+                            player1 = new HardAI(Symbol.X);
                             break;
                         default:
                             System.out.println("Bad parameters!");
@@ -63,7 +61,7 @@ public class Main {
                             player2 = new MediumAI();
                             break;
                         case "hard":
-                            player1 = new HardAI();
+                            player2 = new HardAI(Symbol.O);
                             break;
                         default:
                             System.out.println("Bad parameters!");
@@ -88,6 +86,7 @@ public class Main {
             } while (h == -1);
             System.out.println(field.toString());
             if (field.winCheck(Symbol.X)) {
+                field.printWinMessage(Symbol.X);
                 field.clear();
                 break;
             } else if (field.getXCount() + field.getYCount() == 9) {
@@ -100,6 +99,7 @@ public class Main {
             } while (h == -1);
             System.out.println(field.toString());
             if (field.winCheck(Symbol.O)) {
+                field.printWinMessage(Symbol.O);
                 field.clear();
                 break;
             }
